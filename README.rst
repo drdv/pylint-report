@@ -41,13 +41,13 @@ Place the following in your ``.pylintrc`` (or specify the ``--load-plugins`` and
 
   + ``pylint path/to/code > report.json``: generate a (custom) ``json`` file using ``pylint``
 
-  + ``pylint_report report.json --html-file report.html``: generate html report
+  + ``pylint_report.py report.json --html-file report.html``: generate html report
 
-* Or alternatively ``pylint path/to/code | pylint_report > report.html``
+* Or alternatively ``pylint path/to/code | pylint_report.py > report.html``
 
-* ``cat report.json | pylint_report -s`` returns only the pylint score
+* ``cat report.json | pylint_report.py -s`` returns only the pylint score
 
-* Using ``pylint-report`` without installation requires specifying ``export PYTHONPATH="/path/to/pylint_report"``.
+* To use without installation specify ``export PYTHONPATH="/path/to/pylint-report"``.
 
 Based on
 ---------
