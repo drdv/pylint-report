@@ -12,4 +12,5 @@ setup(
     python_requires='>=3.6',
     py_modules=['pylint_report'],
     install_requires=['pandas', 'pylint'],
+    scripts=['pylint_report/pylint_report.py'],
 )
