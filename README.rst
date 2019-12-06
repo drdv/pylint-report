@@ -45,6 +45,12 @@ Place the following in your ``.pylintrc`` (or specify the ``--load-plugins`` and
 
 * Or alternatively ``pylint path/to/code | pylint_report.py > report.html``
 
+  + optionally one could add a figure: ``pylint path/to/code | pylint_report.py --score-history-fig score_history.png > report.html``
+
+  + the figure can be generated from log files using: ``pylint_report.py --score-history-dir logs --score-history-fig score_history.png``
+
+    For more information see the code.
+
 * ``cat report.json | pylint_report.py -s`` returns only the pylint score
 
 * To use without installation specify ``export PYTHONPATH="/path/to/pylint-report"``.

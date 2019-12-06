@@ -107,7 +107,7 @@ def json2html(data, score_figure=None):
 
     now = datetime.now()
     out += ('<small>Report generated on {} at {} by '
-            '<a href="https://github.com/drdv/pylint-html">pytest-html</a>'
+            '<a href="https://github.com/drdv/pylint-report">pytest-report</a>'
             '</small>\n'). format(now.strftime('%Y-%d-%m'),
                                   now.strftime('%H:%M:%S'))
 
