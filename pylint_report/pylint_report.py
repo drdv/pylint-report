@@ -39,7 +39,7 @@ def get_score(stats):
     return 10 - 10*(5 * e + w + r + c) / s
 
 def json2html(data):
-    """Generate an html file (based on :obj:`data`) and send in to stdout."""
+    """Generate an html file (based on :obj:`data`)."""
     out = HTML_HEAD
     out += '<body>\n<h1><u>Pylint report</u></h1>\n'
 
@@ -89,7 +89,7 @@ def json2html(data):
                         '\n<td valign="top">\n' + s2 + '\n</td>\n'])
         out += '</tr></table>'
 
-        out += value[cols2keep].to_html(justify='center')
+        out += value[cols2keep].to_html(justify='center').replace('\\n','<br>')
         out += '\n</section>\n'
 
     # end of document
@@ -97,7 +97,7 @@ def json2html(data):
     return out
 
 class _SetEncoder(json.JSONEncoder):
-    """Handle sets.
+    """Handle sets when dumping to json.
 
     Note
     -----
