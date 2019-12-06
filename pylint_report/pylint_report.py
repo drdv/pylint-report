@@ -94,9 +94,10 @@ def plot_score_history(scores, fig_name):
     plt.yticks([2, 4, 6, 8, 10])
     plt.grid(True)
     plt.xlabel('commits')
-    plt.ylabel('pylint score')
+    plt.ylabel('score')
     plt.autoscale(enable=True, axis='x', tight=True)
     plt.subplots_adjust(bottom=0.3)
+    plt.title('Score history')
     plt.savefig(fig_name, dpi=200)
 
 def json2html(data, score_figure=None):
@@ -115,7 +116,7 @@ def json2html(data, score_figure=None):
         format(score if score is not None else -1)
 
     if score_figure is not None:
-        out += '<img src="{}">\n'.format(score_figure)
+        out += '<img src="{}" alt="Score history" width="70%">\n'.format(score_figure)
 
     msg = dict()
     if data['messages']:
