@@ -99,7 +99,7 @@ def plot_score_history(scores, fig_name):
     plt.subplots_adjust(bottom=0.3)
     plt.savefig(fig_name, dpi=200)
 
-def json2html(data):
+def json2html(data, score_figure=None):
     """Generate an html file (based on :obj:`data`)."""
     out = HTML_HEAD
     out += '<body>\n<h1><u>Pylint report</u></h1>\n'
@@ -111,8 +111,11 @@ def json2html(data):
                                   now.strftime('%H:%M:%S'))
 
     score = get_score(data['stats'])
-    out += '<h2>Score: <font color="red"> {:.2f} </font>/ 10</h2>'.\
+    out += '<h2>Score: <font color="red"> {:.2f} </font>/ 10</h2>\n'.\
         format(score if score is not None else -1)
+
+    if score_figure is not None:
+        out += '<img src="{}">\n'.format(score_figure)
 
     msg = dict()
     if data['messages']:
@@ -267,4 +270,4 @@ if __name__ == '__main__':
         if args.score:
             print('{:.2f}'.format(get_score(json_data['stats'])), file=sys.stdout)
         else:
-            print(json2html(json_data), file=args.html_file)
+            print(json2html(json_data, args.score_history_fig), file=args.html_file)
