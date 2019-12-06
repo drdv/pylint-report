@@ -1,14 +1,21 @@
 #!/usr/bin/env python3
 """Custom json reporter for pylint and json to html export utility."""
+import os
 import sys
 import json
 import html
 import argparse
+import logging
 from datetime import datetime
+from glob import glob
+from collections import OrderedDict
 from pylint.reporters.base_reporter import BaseReporter
+import matplotlib.pyplot as plt
 import pandas as pd
 
 # pylint: disable=invalid-name
+
+log = logging.getLogger()
 
 HTML_HEAD = """<!DOCTYPE HTML>
 <html>
@@ -24,6 +31,14 @@ th {background-color: #8d9db6;}
 </head>
 """
 
+plt.rcParams.update({'font.size': 18,
+                     'axes.titlesize': 18,
+                     'axes.labelsize': 18,
+                     'xtick.labelsize': 18,
+                     'ytick.labelsize': 18,
+                     'legend.fontsize': 18,
+                     'figure.titlesize': 18})
+
 def get_score(stats):
     """Compute score."""
     if 'statement' not in stats or stats['statement'] == 0:
@@ -37,6 +52,52 @@ def get_score(stats):
 
     # https://docs.pylint.org/en/1.6.0/faq.html
     return 10 - 10*(5 * e + w + r + c) / s
+
+def get_score_history(score_dir):
+    """Return a ordered dict of score history as sha:score pairs.
+
+    Note
+    -----
+    The following assumptions regarding the score files in score_dir are made:
+
+      - the filenames are ``pylint_NUMBER.SHORT_SHA.log``
+      - each file contains only one number (the score)
+
+    Returns
+    --------
+    :obj:`collections.OrderedDict`
+        Sha:score pairs.
+
+    """
+    # pylint: disable=redefined-outer-name
+    out = OrderedDict()
+    for f in sorted(glob(os.path.join(score_dir, 'pylint_*.log'))):
+        with open(f) as h:
+            s = h.readline(1)
+            out[f.split('.')[-2]] = float(s)
+    return out
+
+def plot_score_history(scores, fig_name):
+    """Plot score history.
+
+    Parameters
+    ----------
+    scores : :obj:`collections.OrderedDict`
+        Scores generated using :func:`get_score_history`.
+    fig_name : :obj:`str`
+        Name of file where to save the figure.
+
+    """
+    plt.figure(figsize=(15, 5))
+    plt.plot(list(scores.values()), 'bo--')
+    plt.xticks(range(len(scores)), list(scores.keys()), rotation='vertical')
+    plt.yticks([2, 4, 6, 8, 10])
+    plt.grid(True)
+    plt.xlabel('commits')
+    plt.ylabel('pylint score')
+    plt.autoscale(enable=True, axis='x', tight=True)
+    plt.subplots_adjust(bottom=0.3)
+    plt.savefig(fig_name, dpi=200)
 
 def json2html(data):
     """Generate an html file (based on :obj:`data`)."""
@@ -89,7 +150,7 @@ def json2html(data):
                         '\n<td valign="top">\n' + s2 + '\n</td>\n'])
         out += '</tr></table>'
 
-        out += value[cols2keep].to_html(justify='center').replace('\\n','<br>')
+        out += value[cols2keep].to_html(justify='center').replace('\\n', '<br>')
         out += '\n</section>\n'
 
     # end of document
@@ -177,15 +238,33 @@ def get_parser():
         '-s', '--score',
         action='store_true',
         help='Output only the score.')
+    parser.add_argument(
+        '--score-history-dir',
+        default=None,
+        help='Directory with score history.')
+    parser.add_argument(
+        '--score-history-fig',
+        default=None,
+        help='Filename where to store the score history figure.')
 
     return parser
 
 if __name__ == '__main__':
+    logging.basicConfig(level=logging.INFO)
     args = get_parser().parse_args()
-    with args.json_file as h:
-        json_data = json.load(h)
 
-    if args.score:
-        print('{:.2f}'.format(get_score(json_data['stats'])), file=sys.stdout)
+    if args.score_history_dir is not None:
+        if args.score_history_fig is not None:
+            plot_score_history(get_score_history(args.score_history_dir),
+                               args.score_history_fig)
+        else:
+            log.warning(('Score history figure not generated '
+                         '(--score_history-fig flag not provided).'))
     else:
-        print(json2html(json_data), file=args.html_file)
+        with args.json_file as h:
+            json_data = json.load(h)
+
+        if args.score:
+            print('{:.2f}'.format(get_score(json_data['stats'])), file=sys.stdout)
+        else:
+            print(json2html(json_data), file=args.html_file)
