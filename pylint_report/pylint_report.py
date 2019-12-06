@@ -96,7 +96,7 @@ def plot_score_history(scores, fig_name):
     plt.xlabel('commits')
     plt.ylabel('score')
     plt.autoscale(enable=True, axis='x', tight=True)
-    plt.subplots_adjust(bottom=0.3)
+    plt.subplots_adjust(bottom=0.35)
     plt.title('Score history')
     plt.savefig(fig_name, dpi=200)
 
