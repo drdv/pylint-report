@@ -49,7 +49,7 @@ Place the following in your ``.pylintrc`` (or specify the ``--load-plugins`` and
 
   + the figure can be generated from log files using: ``pylint_report.py --score-history-dir logs --score-history-fig score_history.png``
 
-    For more information regarding the format of the logs see :func:`pylint_report.get_score_history`.
+    For more information regarding the format of the logs see ``pylint_report.get_score_history``.
 
 * ``cat report.json | pylint_report.py -s`` returns only the pylint score
 
