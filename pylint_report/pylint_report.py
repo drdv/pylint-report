@@ -10,7 +10,6 @@ from datetime import datetime
 from glob import glob
 from collections import OrderedDict
 from pylint.reporters.base_reporter import BaseReporter
-import matplotlib.pyplot as plt
 import pandas as pd
 
 # pylint: disable=invalid-name
@@ -31,13 +30,17 @@ th {background-color: #8d9db6;}
 </head>
 """
 
-plt.rcParams.update({'font.size': 18,
-                     'axes.titlesize': 18,
-                     'axes.labelsize': 18,
-                     'xtick.labelsize': 18,
-                     'ytick.labelsize': 18,
-                     'legend.fontsize': 18,
-                     'figure.titlesize': 18})
+try:
+    import matplotlib.pyplot as plt
+    plt.rcParams.update({'font.size': 18,
+                         'axes.titlesize': 18,
+                         'axes.labelsize': 18,
+                         'xtick.labelsize': 18,
+                         'ytick.labelsize': 18,
+                         'legend.fontsize': 18,
+                         'figure.titlesize': 18})
+except ModuleNotFoundError:
+    log.warning('matplotlib not found, plot_score_history cannot be used.')
 
 def get_score(stats):
     """Compute score."""
