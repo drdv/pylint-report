@@ -30,18 +30,6 @@ th {background-color: #8d9db6;}
 </head>
 """
 
-try:
-    import matplotlib.pyplot as plt
-    plt.rcParams.update({'font.size': 18,
-                         'axes.titlesize': 18,
-                         'axes.labelsize': 18,
-                         'xtick.labelsize': 18,
-                         'ytick.labelsize': 18,
-                         'legend.fontsize': 18,
-                         'figure.titlesize': 18})
-except ModuleNotFoundError:
-    log.warning('matplotlib not found, plot_score_history cannot be used.')
-
 def get_score(stats):
     """Compute score."""
     if 'statement' not in stats or stats['statement'] == 0:
@@ -91,6 +79,18 @@ def plot_score_history(scores, fig_name):
         Name of file where to save the figure.
 
     """
+    try:
+        import matplotlib.pyplot as plt
+        plt.rcParams.update({'font.size': 18,
+                             'axes.titlesize': 18,
+                             'axes.labelsize': 18,
+                             'xtick.labelsize': 18,
+                             'ytick.labelsize': 18,
+                             'legend.fontsize': 18,
+                             'figure.titlesize': 18})
+    except ModuleNotFoundError:
+        log.warning('matplotlib not found, plot_score_history cannot be used.')
+
     plt.figure(figsize=(15, 5))
     plt.plot(list(scores.values()), 'bo--')
     plt.xticks(range(len(scores)), list(scores.keys()), rotation='vertical')
@@ -272,6 +272,7 @@ if __name__ == '__main__':
             json_data = json.load(h)
 
         if args.score:
-            print('{:.2f}'.format(get_score(json_data['stats'])), file=sys.stdout)
+            print('pylint score: {:.2f}'.format(get_score(json_data['stats'])),
+                  file=sys.stdout)
         else:
             print(json2html(json_data, args.score_history_fig), file=args.html_file)
