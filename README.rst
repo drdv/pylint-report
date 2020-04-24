@@ -6,9 +6,9 @@ Generates an html report summarizing the results of `pylint <https://www.pylint.
 Installation
 -------------
 
-  .. code-block:: shell
+.. code-block:: shell
 
-     pip install pylint-report
+   pip install pylint-report
 
 How to use
 -----------
