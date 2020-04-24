@@ -6,23 +6,9 @@ Generates an html report summarizing the results of `pylint <https://www.pylint.
 Installation
 -------------
 
-* Directly install from the github repository
-
   .. code-block:: shell
 
-     pip install -e git+git://github.com/drdv/pylint-report.git#egg=pylint-report
-
-* Install using ``.requirements.txt`` file
-
-  .. code-block:: shell
-
-     pip install -r .requirements.txt
-
-  Where your ``.requirements.txt`` file contains the following line
-
-  .. code-block:: shell
-
-     -e git+git://github.com/drdv/pylint-report.git#egg=pylint-report
+     pip install pylint-report
 
 How to use
 -----------
