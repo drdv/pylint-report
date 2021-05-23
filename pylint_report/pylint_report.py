@@ -22,10 +22,37 @@ HTML_HEAD = """<!DOCTYPE HTML>
 <title>Pylint report</title>
 <meta charset="utf-8">
 <style type="text/css">
-body {font-family: sans-serif;}
-table {border-collapse: collapse;}
-th, td {padding: 0.5em;}
-th {background-color: #8d9db6;}
+body {
+    font-family: sans-serif;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 0.5em;
+}
+
+th {
+    background-color: #8d9db6;
+}
+
+tr {
+    background-color:white;
+}
+
+.score {
+    color: red;
+}
+
+code {
+  font-family: Consolas,"courier new";
+  color: blue;
+  background-color: #f1f1f1;
+  padding: 2px;
+  font-size: 105%;
+}
 </style>
 </head>
 """
@@ -105,18 +132,26 @@ def plot_score_history(scores, fig_name):
 
 def json2html(data, score_figure=None):
     """Generate an html file (based on :obj:`data`)."""
+    from _version import __version__
+
     out = HTML_HEAD
     out += '<body>\n<h1><u>Pylint report</u></h1>\n'
 
     now = datetime.now()
     out += ('<small>Report generated on {} at {} by '
-            '<a href="https://github.com/drdv/pylint-report">pytest-report</a>'
+            '<a href="https://github.com/drdv/pylint-report">pytest-report</a> (version {})'
             '</small>\n'). format(now.strftime('%Y-%d-%m'),
-                                  now.strftime('%H:%M:%S'))
+                                  now.strftime('%H:%M:%S'),
+                                  __version__)
 
-    score = get_score(data['stats'])
-    out += '<h2>Score: <font color="red"> {:.2f} </font>/ 10</h2>\n'.\
-        format(score if score is not None else -1)
+    s = get_score(data['stats'])
+
+    score = ('<h2>'
+             '<span>Score:</span>'
+             '<span class="score"> {:.2f} </span>'
+             '<span> / 10 </span>'
+             '</h2>')
+    out += score.format(s if s is not None else -1)
 
     if score_figure is not None:
         out += '<img src="{}" alt="Score history" width="70%">\n'.format(score_figure)
@@ -133,19 +168,19 @@ def json2html(data, score_figure=None):
             out += '<li><a href="#{0}">{0}</a> ({1})</li>\n'.format(module,
                                                                     len(msg[module]))
         else:
-            out += '<li>{0} ({1})</li>\n'.format(module, 0)
+            out += '<li>{} ({})</li>\n'.format(module, 0)
     out += '</ul>'
 
     # modules
-    section = ('\n<section> <h2 id="{0}">Module: '
-               '<font color="blue"><code>{0} ({1})</code></font></h2>\n')
+    section = ('<h2>'
+               '<span>Module:</span>'
+               '<span id="{module}"> <code>{module} ({count})</code> </span>'
+               '</h2>')
     cols2keep = ['line', 'column', 'symbol', 'type', 'obj', 'message']
     for module, value in msg.items():
         out += '<br>\n<hr>'
-        out += section.format(module, len(value))
-        out += '<hr>'
-
-        out += '<table><tr style="background-color:white;">'
+        out += section.format(module=module, count=len(value))
+        out += '<hr><table><tr>'
 
         s1 = value.groupby('symbol')['module'].count().to_frame().reset_index().\
             rename(columns={'module': '# msg'}).to_html(index=False, justify='center')

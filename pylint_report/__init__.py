@@ -1,2 +1,2 @@
 """Load modules."""
-__version__ = "0.1.4"
+from pylint_report._version import __version__
