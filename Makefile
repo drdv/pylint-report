@@ -11,3 +11,11 @@ setup-venv:
 .PHONY: lint
 lint:
 	-@pylint pylint_report | pylint_report/pylint_report.py > .pylint_report.html
+
+.PHONY: dist
+dist:
+	python3 setup.py sdist bdist_wheel
+
+.PHONY: pypi
+pypi:
+	twine upload dist/*
