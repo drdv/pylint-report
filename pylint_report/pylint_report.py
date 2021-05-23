@@ -95,42 +95,7 @@ def get_score_history(score_dir):
             out[f.split('.')[-2]] = float(s)
     return out
 
-def plot_score_history(scores, fig_name):
-    """Plot score history.
-
-    Parameters
-    ----------
-    scores : :obj:`collections.OrderedDict`
-        Scores generated using :func:`get_score_history`.
-    fig_name : :obj:`str`
-        Name of file where to save the figure.
-
-    """
-    try:
-        import matplotlib.pyplot as plt
-        plt.rcParams.update({'font.size': 18,
-                             'axes.titlesize': 18,
-                             'axes.labelsize': 18,
-                             'xtick.labelsize': 18,
-                             'ytick.labelsize': 18,
-                             'legend.fontsize': 18,
-                             'figure.titlesize': 18})
-    except ModuleNotFoundError:
-        log.warning('matplotlib not found, plot_score_history cannot be used.')
-
-    plt.figure(figsize=(15, 5))
-    plt.plot(list(scores.values()), 'bo--')
-    plt.xticks(range(len(scores)), list(scores.keys()), rotation='vertical')
-    plt.yticks([2, 4, 6, 8, 10])
-    plt.grid(True)
-    plt.xlabel('commits')
-    plt.ylabel('score')
-    plt.autoscale(enable=True, axis='x', tight=True)
-    plt.subplots_adjust(bottom=0.35)
-    plt.title('Score history')
-    plt.savefig(fig_name, dpi=200)
-
-def json2html(data, score_figure=None):
+def json2html(data):
     """Generate an html file (based on :obj:`data`)."""
     out = HTML_HEAD
     out += '<body>\n<h1><u>Pylint report</u></h1>\n'
@@ -149,9 +114,6 @@ def json2html(data, score_figure=None):
              '<span> / 10 </span>'
              '</h2>')
     out += score.format(s if s is not None else -1)
-
-    if score_figure is not None:
-        out += '<img src="{}" alt="Score history" width="70%">\n'.format(score_figure)
 
     msg = dict()
     if data['messages']:
@@ -277,14 +239,6 @@ def get_parser():
         '-s', '--score',
         action='store_true',
         help='Output only the score.')
-    parser.add_argument(
-        '--score-history-dir',
-        default=None,
-        help='Directory with score history.')
-    parser.add_argument(
-        '--score-history-fig',
-        default=None,
-        help='Filename where to store the score history figure.')
 
     return parser
 
@@ -292,19 +246,11 @@ if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
     args = get_parser().parse_args()
 
-    if args.score_history_dir is not None:
-        if args.score_history_fig is not None:
-            plot_score_history(get_score_history(args.score_history_dir),
-                               args.score_history_fig)
-        else:
-            log.warning(('Score history figure not generated '
-                         '(--score_history-fig flag not provided).'))
-    else:
-        with args.json_file as h:
-            json_data = json.load(h)
+    with args.json_file as h:
+        json_data = json.load(h)
 
-        if args.score:
-            print('pylint score: {:.2f}'.format(get_score(json_data['stats'])),
-                  file=sys.stdout)
-        else:
-            print(json2html(json_data, args.score_history_fig), file=args.html_file)
+    if args.score:
+        print('pylint score: {:.2f}'.format(get_score(json_data['stats'])),
+              file=sys.stdout)
+    else:
+        print(json2html(json_data), file=args.html_file)
