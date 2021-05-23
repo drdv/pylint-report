@@ -132,17 +132,14 @@ def plot_score_history(scores, fig_name):
 
 def json2html(data, score_figure=None):
     """Generate an html file (based on :obj:`data`)."""
-    from _version import __version__
-
     out = HTML_HEAD
     out += '<body>\n<h1><u>Pylint report</u></h1>\n'
 
     now = datetime.now()
     out += ('<small>Report generated on {} at {} by '
-            '<a href="https://github.com/drdv/pylint-report">pytest-report</a> (version {})'
+            '<a href="https://github.com/drdv/pylint-report">pytest-report</a>'
             '</small>\n'). format(now.strftime('%Y-%d-%m'),
-                                  now.strftime('%H:%M:%S'),
-                                  __version__)
+                                  now.strftime('%H:%M:%S'))
 
     s = get_score(data['stats'])
 
