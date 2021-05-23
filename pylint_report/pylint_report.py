@@ -25,7 +25,6 @@ HTML_HEAD = """<!DOCTYPE HTML>
 body {font-family: sans-serif;}
 table {border-collapse: collapse;}
 th, td {padding: 0.5em;}
-th {background-color: #8d9db6;}
 </style>
 </head>
 """
