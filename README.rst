@@ -18,10 +18,10 @@ Place the following in your ``.pylintrc`` (or specify the ``--load-plugins`` and
 .. code-block:: shell
 
    [MASTER]
-   load-plugins=pylint_report.pylint_report
+   load-plugins=pylint_report
 
    [REPORTS]
-   output-format=pylint_report.pylint_report.CustomJsonReporter
+   output-format=pylint_report.CustomJsonReporter
 
 * A two-step approach:
 
