@@ -216,8 +216,7 @@ class CustomJsonReporter(BaseReporter):
                                  'warning', 'refactor', 'convention']}
 
         print(json.dumps({'messages': self.messages,
-                          'stats': stats,
-                          'previous_stats': previous_stats},
+                          'stats': stats},
                          cls=_SetEncoder, indent=2),
               file=self.out)
 
