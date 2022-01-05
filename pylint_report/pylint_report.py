@@ -210,6 +210,11 @@ class CustomJsonReporter(BaseReporter):
 
     def on_close(self, stats, previous_stats):
         """See ``pylint/reporters/base_reporter.py``."""
+        if not isinstance(stats, dict):  # behavior from version 2.12.0
+            stats = {key: getattr(stats, key)
+                     for key in ['by_module', 'statement', 'error',
+                                 'warning', 'refactor', 'convention']}
+
         print(json.dumps({'messages': self.messages,
                           'stats': stats,
                           'previous_stats': previous_stats},
