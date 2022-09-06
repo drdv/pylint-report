@@ -182,9 +182,9 @@ class CustomJsonReporter(BaseReporter):
 
     name = "custom json"
 
-    def __init__(self, output=sys.stdout):
+    def __init__(self, output=None):
         """Construct object."""
-        super().__init__(output)
+        super().__init__(sys.stdout if output is None else output)
         self.messages = []
 
     def handle_message(self, msg):
