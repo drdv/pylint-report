@@ -1,7 +1,7 @@
 PYTHON=python
 VENV_NAME=.venv
 PYLINT=pylint
-PIPY_URL=
+PIPY_URL=https://pypi.org/
 
 _BLUE=\033[34m
 _END=\033[0m
@@ -27,7 +27,8 @@ install-local: setup-venv ## Editable install in venv
 
 .PHONY: lint
 lint:
-	-@${PYLINT} pylint_report | pylint_report/pylint_report.py > .pylint_report.html
+	-@${PYLINT} pylint_report > .pylint_report.json || exit 0
+	-@pylint_report.py .pylint_report.json -o .pylint_report.html
 
 dist-local: setup-venv ## Build package
 	. ${VENV_NAME}/bin/activate && pip install build && ${PYTHON} -m build

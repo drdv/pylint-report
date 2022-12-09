@@ -7,56 +7,15 @@ import sys
 from datetime import datetime
 from pathlib import Path
 
+import jinja2
 import pandas as pd
 from pylint.reporters.base_reporter import BaseReporter
 
 CURRENT_DIR = Path(__file__).resolve().parent
 
+TEMPLATE_FILE = "style/template.html.j2"
+CSS_FILE = "style/default.css"
 COLS2KEEP = ["line", "column", "symbol", "type", "obj", "message"]
-
-HTML_HEAD = """<!DOCTYPE HTML>
-<html lang="en">
-<head>
-  <title>Pylint report</title>
-  <meta charset="utf-8">
-  <style>
-  {style}
-  </style>
-</head>
-"""
-
-SECTION = """
-<br>\n<hr>
-<section>
-<h2>
-  <span>Module:</span>
-  <span id="{module}"> <code>{module} ({count})</code> </span>
-</h2>
-<hr><table><tr>
-\n<td>\n
-  {by_symbol}
-\n</td>\n
-\n<td>\n
-  {by_type}
-\n</td>\n
-</tr></table>
-  {msg}
-\n</section>\n
-"""
-
-SCORE = """
-<h2>
-  <span>Score:</span>
-  <span class="score"> {score:.2f} </span>
-  <span> / 10 </span>
-</h2>
-"""
-
-REPORT_HEADER = """
-<small>
-  Report generated on {date} at {time} using <a href="https://github.com/drdv/pylint-report">pylint-report</a>
-</small>
-"""
 
 
 def get_score(stats):
@@ -79,75 +38,42 @@ def get_score(stats):
     return max(0, 0 if f else 10 * (1 - ((5 * e + w + r + c) / s)))
 
 
-def json2html(data, css_file=None):
-    """Generate an html file (based on :obj:`data`)."""
+def get_template():
+    """Return jinja2 template."""
+    return jinja2.Environment(
+        loader=jinja2.FileSystemLoader(CURRENT_DIR),
+        keep_trailing_newline=True,
+        undefined=jinja2.StrictUndefined,
+    ).get_template(TEMPLATE_FILE)
 
-    if css_file is None:
-        css_file = CURRENT_DIR / "style/default.css"
 
-    with open(css_file, "r") as h:
-        out = HTML_HEAD.format(style=h.read())
+def json2html(data):
+    """Generate an html file based on JSON data."""
 
-    out += "<body>\n<h1><u>Pylint report</u></h1>\n"
+    with open(CURRENT_DIR / CSS_FILE, "r") as h:
+        style = h.read()
 
-    now = datetime.now()
-    out += REPORT_HEADER.format(
-        date=now.strftime("%Y-%d-%m"), time=now.strftime("%H:%M:%S")
-    )
-
-    s = get_score(data["stats"])
-    out += SCORE.format(score=s if s is not None else -1)
-
-    msg = {}
     if data["messages"]:
         msg = {
             name: df.sort_values(["line", "column"]).reset_index(drop=True)
             for name, df in pd.DataFrame(data["messages"]).groupby("module")
         }
+    else:
+        msg = {}
 
-    # modules summary
-    out += "<ul>"
-    for module in data["stats"]["by_module"].keys():
-        if module in msg:
-            out += '<li><a href="#{module}">{module}</a> ({numb})</li>\n'.format(
-                module=module, numb=len(msg[module])
-            )
-        else:
-            out += f"<li>{module} (0)</li>\n"
-    out += "</ul>"
-
-    # modules
-    for module, value in msg.items():
-        by_symbol = (
-            value.groupby("symbol")["module"]
-            .count()
-            .to_frame()
-            .reset_index()
-            .rename(columns={"module": "# msg"})
-            .to_html(index=False, justify="center")
-        )
-
-        by_type = (
-            value.groupby("type")["module"]
-            .count()
-            .to_frame()
-            .reset_index()
-            .rename(columns={"module": "# msg"})
-            .to_html(index=False, justify="center")
-        )
-
-        msg_html = value[COLS2KEEP].to_html(justify="center").replace("\\n", "<br>")
-        out += SECTION.format(
-            module=module,
-            count=len(value),
-            msg=msg_html,
-            by_symbol=by_symbol,
-            by_type=by_type,
-        )
-
-    # end of document
-    out += "</body>\n</html>"
-    return out
+    score = get_score(data["stats"])
+    now = datetime.now()
+    context = dict(
+        cols2keep=COLS2KEEP,
+        date=now.strftime("%Y-%d-%m"),
+        time=now.strftime("%H:%M:%S"),
+        score=f"{score:0.2f}",
+        css=css,
+        pylint_report_url="https://github.com/drdv/pylint-report",
+        modules=data["stats"]["by_module"],
+        msg=msg,
+    )
+    return get_template().render(context)
 
 
 class _SetEncoder(json.JSONEncoder):
@@ -253,12 +179,6 @@ def get_parser():
         default=sys.stdout,
         help="Name of html file to generate.",
     )
-    parser.add_argument(
-        "-s",
-        "--score",
-        action="store_true",
-        help="Output only the score.",
-    )
 
     return parser
 
@@ -270,11 +190,7 @@ def main():
     with args.json_file as h:
         json_data = json.load(h)
 
-    if args.score:
-        score = get_score(json_data["stats"])
-        print(f"pylint score: {score:.2f}", file=sys.stdout)
-    else:
-        print(json2html(json_data), file=args.html_file)
+    print(json2html(json_data), file=args.html_file)
 
 
 if __name__ == "__main__":

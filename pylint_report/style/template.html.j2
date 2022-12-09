@@ -1,0 +1,58 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <title>Pylint report</title>
+    <meta charset="utf-8">
+    <style>
+      {{css}}
+    </style>
+  </head>
+  <body>
+    <h1><u>Pylint report</u></h1>
+    <small>
+      Report generated on {{date}} at {{time}} using <a href={{pylint_report_url}}>pylint-report</a>
+    </small>
+    <h2>
+      <span>Score:</span>
+      <span class="score"> {{score}} </span>
+      <span> / 10 </span>
+    </h2>
+    <!-- modules summary -->
+    <ul>
+      {% for module in modules.keys() -%}
+      {% if module in msg -%}
+      <li> <a href="#{{module}}"> {{module}} </a> ({{ msg[module] | length }})</li>
+      {% else -%}
+      <li> {{module}} (0)</li>
+      {% endif -%}
+      {% endfor -%}
+    </ul>
+    {% for module, value in msg.items() -%}
+    <section>
+      <h2>
+        <span>Module:</span>
+        <span id="{{module}}"> <code>{{module}} ({{ value | length }})</code> </span>
+      </h2>
+      <hr><table><tr>
+          <td>
+            {{ value.groupby("symbol")["module"]
+            .count()
+            .to_frame()
+            .reset_index()
+            .rename(columns={"module": "# msg"})
+            .to_html(index=False, justify="center") }}
+          </td>
+          <td>
+            {{ value.groupby("type")["module"]
+            .count()
+            .to_frame()
+            .reset_index()
+            .rename(columns={"module": "# msg"})
+            .to_html(index=False, justify="center") }}
+          </td>
+      </tr></table>
+      {{ value[cols2keep].to_html(justify="center").replace("\\n", "<br>") }}
+    </section>
+    {% endfor -%}
+  </body>
+</html>
