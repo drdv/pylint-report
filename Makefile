@@ -29,7 +29,7 @@ rm-docs: ## Delete generated docs
 
 lint-run:
 	-@${PYLINT} pylint_report > .pylint_report.json || exit 0
-	-@pylint_report.py .pylint_report.json -o .pylint_report.html
+	-@pylint_report.py -s .pylint_report.json -o .pylint_report.html
 
 lint-copy-to-docs:
 	mkdir -p $(HTML_DIR)

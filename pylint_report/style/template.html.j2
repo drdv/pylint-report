@@ -3,9 +3,13 @@
   <head>
     <title>Pylint report</title>
     <meta charset="utf-8">
+    {% if external_css -%}
+    <link rel="stylesheet" href="pylint-report.css">
+    {% else -%}
     <style>
       {{css}}
     </style>
+    {% endif -%}
   </head>
   <body>
     <h1><u>Pylint report</u></h1>
