@@ -1,6 +1,7 @@
 PYTHON=python
 VENV_NAME=.venv
 PYLINT=pylint
+HTML_DIR=docs/sphinx/build/html
 PIPY_URL=https://pypi.org/
 
 _BLUE=\033[34m
@@ -17,10 +18,28 @@ endef
 help: ## Show this help
 	@egrep -h '\s##\s' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "${_BLUE}%-15s${_END} %s\n", $$1, $$2}'
 
-.PHONY: lint
-lint:
+docs: rm-docs #lint ## Generate sphinx docs
+	cd docs/sphinx && make html
+
+lint: lint-run lint-copy-to-docs ## Lint code
+
+rm-docs: ## Delete generated docs
+	@rm -rf docs/sphinx/source/.autosummary
+	@rm -rf docs/sphinx/build
+
+lint-run:
 	-@${PYLINT} pylint_report > .pylint_report.json || exit 0
 	-@pylint_report.py .pylint_report.json -o .pylint_report.html
+
+lint-copy-to-docs:
+	mkdir -p $(HTML_DIR)
+	rm -rf $(HTML_DIR)/.pylint_report.html
+	mv -f .pylint_report.html $(HTML_DIR)
+	rm .pylint_report.json
+
+.PHONY: open
+open: ## Open sphinx documentation
+	brave-browser ${HTML_DIR}/index.html
 
 pre-commit: ## Execute pre-commit on all files
 	@pre-commit run -a

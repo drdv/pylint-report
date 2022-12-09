@@ -1,3 +1,4 @@
+build
 __pycache__
 .pylint_report.html
 .pylint_report.json
