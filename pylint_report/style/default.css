@@ -1,37 +1,38 @@
-html, body {
-    height: 100%;
+html,
+body {
+  height: 100%;
 }
 
 body {
-    font-family: sans-serif;
-    padding: 1em;
-    margin: 0;
-    line-height: 1.5;
+  font-family: sans-serif;
+  padding: 1em;
+  margin: 0;
+  line-height: 1.5;
 }
 
-td
-{
-  vertical-align:top;
+td {
+  vertical-align: top;
 }
 
-th, td {
-    padding: 0.5em;
+th,
+td {
+  padding: 0.5em;
 }
 
 th {
-    background-color: #8d9db6;
+  background-color: #8d9db6;
 }
 
 tr {
-    background-color:white;
+  background-color: white;
 }
 
 .score {
-    color: red;
+  color: red;
 }
 
 code {
-  font-family: Consolas,"courier new";
+  font-family: Consolas, "courier new";
   color: blue;
   background-color: #f1f1f1;
   padding: 2px;
