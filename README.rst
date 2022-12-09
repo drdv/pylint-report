@@ -13,7 +13,7 @@ Installation
 How to use
 -----------
 
-Place the following in your ``.pylintrc`` (or specify the ``--load-plugins`` and ``--output-format`` flags)
+Place the following in ``.pylintrc``
 
 .. code-block:: shell
 
@@ -23,17 +23,28 @@ Place the following in your ``.pylintrc`` (or specify the ``--load-plugins`` and
    [REPORTS]
    output-format=pylint_report.CustomJsonReporter
 
+or place the following in ``pyproject.toml``
+
+.. code-block:: toml
+
+   [tool.pylint.MASTER]
+   load-plugins = "pylint_report"
+
+   [tool.pylint.REPORTS]
+   output-format = "pylint_report.CustomJsonReporter"
+
+or manually pass the ``--load-plugins`` and ``--output-format`` flags.
+
 * A two-step approach:
 
   + ``pylint path/to/code > report.json``: generate a (custom) ``json`` file using ``pylint``
 
-  + ``pylint_report.py report.json --html-file report.html``: generate html report
+  + ``pylint_report.py report.json -o report.html``: generate html report
 
 * Or alternatively ``pylint path/to/code | pylint_report.py > report.html``
 
 * ``cat report.json | pylint_report.py -s`` returns only the pylint score
 
-* To use without installation specify ``export PYTHONPATH="/path/to/pylint-report"``.
 
 Based on
 ---------
