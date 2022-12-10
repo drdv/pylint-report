@@ -12,6 +12,8 @@ jobs:
     steps:
       - name: set up git repository
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
 
       # for .nojekyll see https://stackoverflow.com/a/64544659
       # remove .htmlcov/.gitignore otherwise not pushed to gh-pages branch
