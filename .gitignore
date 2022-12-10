@@ -4,3 +4,4 @@ __pycache__
 .pylint_report.json
 .autosummary
 _version.py
+*.egg-info

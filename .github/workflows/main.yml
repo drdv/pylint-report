@@ -13,17 +13,15 @@ jobs:
       - name: set up git repository
         uses: actions/checkout@v2
         with:
-          fetch-depth: 0
+          # by default a shallow clone is made but this prevents setuptools_scm to identify the correct version
+          fetch-depth: 0 # disable shallow clone (https://github.com/exasol/exasol-testcontainers/issues/148#issue-954499455)
 
       # for .nojekyll see https://stackoverflow.com/a/64544659
       # remove .htmlcov/.gitignore otherwise not pushed to gh-pages branch
       - name: generate sphinx docs
         run: |
-          git describe --always
           make install-local
-          git describe --always
           . .venv/bin/activate && make docs
-          git describe --always
           touch docs/sphinx/build/html/.nojekyll
           rm docs/sphinx/build/html/.htmlcov/.gitignore
 
