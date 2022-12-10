@@ -1,0 +1,23 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: set up git repository
+        uses: actions/checkout@v2
+
+      - name: generate sphinx docs
+        run: make install-local && make docs
+
+      - name: deploy pages
+        uses: JamesIves/github-pages-deploy-action@4.1.7
+        with:
+          branch: gh-pages
+          folder: docs/sphinx/build/html
