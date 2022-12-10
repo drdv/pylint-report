@@ -17,8 +17,11 @@ jobs:
       # remove .htmlcov/.gitignore otherwise not pushed to gh-pages branch
       - name: generate sphinx docs
         run: |
+          git describe --tags
           make install-local
+          git describe --tags
           . .venv/bin/activate && make docs
+          git describe --tags
           touch docs/sphinx/build/html/.nojekyll
           rm docs/sphinx/build/html/.htmlcov/.gitignore
 
