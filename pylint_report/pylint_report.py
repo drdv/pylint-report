@@ -205,10 +205,10 @@ def main(argv=None):
     print(json2html(json_data, args.external_css), file=args.html_file)
 
 
-def sphinx_argparse_func():
+def sphinx_argparse_func():  # pragma: no cover
     """Return a parser to use with sphinx-argparse."""
     return get_parser()
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     main()

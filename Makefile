@@ -2,6 +2,7 @@ PYTHON=python
 VENV_NAME=.venv
 PYLINT=pylint
 HTML_DIR=docs/sphinx/build/html
+TMP_PYLINT_FILE=.pylint_report.json
 
 _BLUE=\033[34m
 _END=\033[0m
@@ -28,14 +29,14 @@ rm-docs: ## Delete generated docs
 	@rm -rf docs/sphinx/build
 
 lint-run:
-	-@${PYLINT} pylint_report pylint_report/utest/* > .pylint_report.json || exit 0
-	-@pylint_report .pylint_report.json -o .pylint_report.html
+	-@${PYLINT} pylint_report pylint_report/utest/* > ${TMP_PYLINT_FILE} || exit 0
+	-@pylint_report ${TMP_PYLINT_FILE} -o .pylint_report.html
 
 lint-copy-to-docs:
 	mkdir -p $(HTML_DIR)
 	rm -rf $(HTML_DIR)/.pylint_report.html
 	mv -f .pylint_report.html $(HTML_DIR)
-	rm .pylint_report.json
+	rm ${TMP_PYLINT_FILE}
 
 test-run:
 	coverage run -m pytest -v

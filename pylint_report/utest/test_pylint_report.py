@@ -11,11 +11,15 @@ from pathlib import Path
 from unittest import mock
 
 import pytest
+from pylint.lint import Run
+
+from pylint_report import CustomJsonReporter
+from pylint_report.pylint_report import get_score
 
 # pylint: disable=wrong-import-position
 UTEST_DIR = Path(__file__).resolve().parent
 sys.path.append(str(UTEST_DIR / "../.."))
-from pylint_report.pylint_report import main
+from pylint_report.pylint_report import _SetEncoder, main
 
 RESOURCES_DIR = UTEST_DIR / "resources"
 
@@ -59,44 +63,94 @@ class TestPylintReport(unittest.TestCase):
         )
         shutil.rmtree(tmp_dest)
 
+    def test_json_to_html_css(self):
+        """Test creating html with external css file."""
+        tmp_dest = Path(tempfile.mkdtemp(prefix="pylint_report_test_"))
+        params = [
+            "-e",
+            str(RESOURCES_DIR / ".pylint_report_utest.json"),
+            "-o",
+            str(tmp_dest / ".pylint_report_utest.html"),
+        ]
+
+        main(params)
+        with open(tmp_dest / ".pylint_report_utest.html", "r", encoding="utf-8") as h:
+            data = h.read()
+        self.assertTrue('<link rel="stylesheet" href="pylint-report.css">' in data)
+        shutil.rmtree(tmp_dest)
+
+    def test_json_to_html_no_messages(self):
+        """Test creating html without messages."""
+        tmp_dest = Path(tempfile.mkdtemp(prefix="pylint_report_test_"))
+        params = [
+            "-e",
+            str(RESOURCES_DIR / ".pylint_report_utest_no_messages.json"),
+            "-o",
+            str(tmp_dest / ".pylint_report_utest.html"),
+        ]
+
+        main(params)
+        with open(tmp_dest / ".pylint_report_utest.html", "r", encoding="utf-8") as h:
+            data = h.read()
+
+        for key in ["__init__", "linting_problems", "more_problems", "no_problems"]:
+            self.assertTrue(f"resources.{key} (0)" in data)
+
+        shutil.rmtree(tmp_dest)
+
     def test_json(self):
         """Test creating json file."""
         tmp_dest = Path(tempfile.mkdtemp(prefix="pylint_report_test_"))
         cmd = [
-            "pylint",
             "--load-plugins",
             "pylint_report",
             "--output-format",
             "pylint_report.CustomJsonReporter",
             *[str(p) for p in sorted(RESOURCES_DIR.glob("*.py"))],
         ]
-        # pylint: disable=subprocess-run-check
-        with open(tmp_dest / ".pylint_report_utest.json", "w", encoding="utf-8") as h:
-            subprocess.run(cmd, stdout=h)
+
+        with open(tmp_dest / ".pylint_report_utest.json", "w") as sys.stdout:
+            Run(cmd, exit=False)
 
         with open(tmp_dest / ".pylint_report_utest.json", "r", encoding="utf-8") as h:
             data = json.load(h)
 
-        self.assertTrue("messages" in data)
-        self.assertTrue("stats" in data)
-        self.assertTrue("statement" in data["stats"])
-        self.assertTrue("error" in data["stats"])
-        self.assertTrue("warning" in data["stats"])
-        self.assertTrue("refactor" in data["stats"])
-        self.assertTrue("convention" in data["stats"])
-        self.assertTrue("by_module" in data["stats"])
-        self.assertTrue("resources.__init__" in data["stats"]["by_module"])
-        self.assertTrue("resources.linting_problems" in data["stats"]["by_module"])
-        self.assertTrue("resources.more_problems" in data["stats"]["by_module"])
-        self.assertTrue("resources.no_problems" in data["stats"]["by_module"])
+        for key in ["messages", "stats"]:
+            self.assertTrue(key in data)
 
-        # probably this will fail with future versions of pylint
-        # self.assertTrue(
-        #     filecmp.cmp(
-        #         RESOURCES_DIR / ".pylint_report_utest.json",
-        #         tmp_dest / ".pylint_report_utest.json",
-        #         shallow=False,
-        #     )
-        # )
+        for key in [
+            "statement",
+            "error",
+            "warning",
+            "refactor",
+            "convention",
+            "by_module",
+        ]:
+            self.assertTrue(key in data["stats"])
+
+        for key in ["__init__", "linting_problems", "more_problems", "no_problems"]:
+            self.assertTrue(f"resources.{key}" in data["stats"]["by_module"])
 
         shutil.rmtree(tmp_dest)
+
+    def test_get_score(self):
+        """Test get_score."""
+        score = get_score(
+            {
+                "fatal": 0,
+                "error": 0,
+                "warning": 0,
+                "refactor": 0,
+                "convention": 0,
+                "statement": 0,
+            }
+        )
+        self.assertTrue(score is None)
+
+    def test_SetEncoder(self):
+        "Test _SetEncoder."
+        se = _SetEncoder()
+        res = se.default({1, 2, 3})
+        self.assertTrue(isinstance(res, list))
+        with pytest.raises(TypeError):
+            self.assertTrue(se.default(1))

@@ -16,9 +16,9 @@ repos:
     hooks:
       - id: check-yaml
       - id: end-of-file-fixer
-        exclude: "project_factory/utest/resources/.*"
+        exclude: "pylint_report/utest/resources/.*"
       - id: trailing-whitespace
-        exclude: "project_factory/utest/resources/.*"
+        exclude: "pylint_report/utest/resources/.*"
       - id: mixed-line-ending
       - id: detect-private-key
       - id: check-docstring-first
