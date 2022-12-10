@@ -13,11 +13,14 @@ jobs:
       - name: set up git repository
         uses: actions/checkout@v2
 
+      # for .nojekyll see https://stackoverflow.com/a/64544659
+      # remove .htmlcov/.gitignore otherwise not pushed to gh-pages branch
       - name: generate sphinx docs
         run: |
           make install-local
           . .venv/bin/activate && make docs
           touch docs/sphinx/build/html/.nojekyll
+          rm docs/sphinx/build/html/.htmlcov/.gitignore
 
       - name: deploy pages
         uses: JamesIves/github-pages-deploy-action@4.1.7

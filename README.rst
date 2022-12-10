@@ -1,7 +1,8 @@
 pylint-report
 ==============
 
-Generates an HTML report summarizing the results of `pylint <https://www.pylint.org/>`_.
+Generates an HTML report summarizing the results of `pylint <https://www.pylint.org/>`_
+(see `documentation <https://drdv.github.io/pylint-report>`_).
 
 Installation
 -------------
