@@ -14,7 +14,9 @@ jobs:
         uses: actions/checkout@v2
 
       - name: generate sphinx docs
-        run: make install-local && make docs
+        run: |
+          pip install -e .[dev]
+          make docs
 
       - name: deploy pages
         uses: JamesIves/github-pages-deploy-action@4.1.7
