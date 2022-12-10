@@ -17,6 +17,7 @@ jobs:
         run: |
           make install-local
           . .venv/bin/activate && make docs
+          touch docs/sphinx/build/html/.nojekyll
 
       - name: deploy pages
         uses: JamesIves/github-pages-deploy-action@4.1.7
