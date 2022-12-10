@@ -51,7 +51,7 @@ def json2html(data, external_css):
     """Generate an html file based on JSON data."""
 
     if not external_css:
-        with open(CURRENT_DIR / DEFAULT_CSS_FILE, "r") as h:
+        with open(CURRENT_DIR / DEFAULT_CSS_FILE, "r", encoding="utf-8") as h:
             css = h.read()
     else:
         css = None
@@ -65,15 +65,15 @@ def json2html(data, external_css):
         msg = {}
 
     score = get_score(data["stats"])
+    score = None if score is None else f"{score:0.2f}"
     now = datetime.now()
     context = dict(
         cols2keep=COLS2KEEP,
         date=now.strftime("%Y-%d-%m"),
         time=now.strftime("%H:%M:%S"),
-        score=f"{score:0.2f}",
+        score=score,
         external_css=external_css,
         css=css,
-        pylint_report_url="https://github.com/drdv/pylint-report",
         modules=data["stats"]["by_module"],
         msg=msg,
     )
@@ -195,9 +195,9 @@ def get_parser():
     return parser
 
 
-def main():
+def main(argv=None):
     """Main."""
-    args = get_parser().parse_args()
+    args = get_parser().parse_args(argv)
 
     with args.json_file as h:
         json_data = json.load(h)
