@@ -15,7 +15,7 @@ jobs:
 
       - name: generate sphinx docs
         run: |
-          pip install -e .[dev]
+          pip install .[dev]
           make docs
 
       - name: deploy pages
