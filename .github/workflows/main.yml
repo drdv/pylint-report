@@ -15,8 +15,8 @@ jobs:
 
       - name: generate sphinx docs
         run: |
-          pip install .[dev]
-          make docs
+          make install-local
+          . .venv/bin/activate && make docs
 
       - name: deploy pages
         uses: JamesIves/github-pages-deploy-action@4.1.7
