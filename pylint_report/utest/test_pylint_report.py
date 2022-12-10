@@ -2,7 +2,6 @@
 import filecmp
 import json
 import shutil
-import subprocess
 import sys
 import tempfile
 import unittest
@@ -13,12 +12,12 @@ from unittest import mock
 import pytest
 from pylint.lint import Run
 
-from pylint_report import CustomJsonReporter
 from pylint_report.pylint_report import get_score
 
-# pylint: disable=wrong-import-position
 UTEST_DIR = Path(__file__).resolve().parent
 sys.path.append(str(UTEST_DIR / "../.."))
+
+# pylint: disable=wrong-import-position
 from pylint_report.pylint_report import _SetEncoder, main
 
 RESOURCES_DIR = UTEST_DIR / "resources"
@@ -109,7 +108,11 @@ class TestPylintReport(unittest.TestCase):
             *[str(p) for p in sorted(RESOURCES_DIR.glob("*.py"))],
         ]
 
-        with open(tmp_dest / ".pylint_report_utest.json", "w") as sys.stdout:
+        with open(
+            tmp_dest / ".pylint_report_utest.json",
+            "w",
+            encoding="utf-8",
+        ) as sys.stdout:
             Run(cmd, exit=False)
 
         with open(tmp_dest / ".pylint_report_utest.json", "r", encoding="utf-8") as h:
@@ -118,6 +121,7 @@ class TestPylintReport(unittest.TestCase):
         for key in ["messages", "stats"]:
             self.assertTrue(key in data)
 
+        # pylint: disable=duplicate-code
         for key in [
             "statement",
             "error",
