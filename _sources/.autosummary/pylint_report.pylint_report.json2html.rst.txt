@@ -1,0 +1,6 @@
+pylint\_report.pylint\_report.json2html
+=======================================
+
+.. currentmodule:: pylint_report.pylint_report
+
+.. autofunction:: json2html

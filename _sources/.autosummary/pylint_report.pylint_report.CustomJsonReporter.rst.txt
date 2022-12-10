@@ -1,0 +1,38 @@
+pylint\_report.pylint\_report.CustomJsonReporter
+================================================
+
+.. currentmodule:: pylint_report.pylint_report
+
+.. autoclass:: CustomJsonReporter
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~CustomJsonReporter.display_messages
+      ~CustomJsonReporter.display_reports
+      ~CustomJsonReporter.handle_message
+      ~CustomJsonReporter.on_close
+      ~CustomJsonReporter.on_set_current_module
+      ~CustomJsonReporter.set_output
+      ~CustomJsonReporter.writeln
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~CustomJsonReporter.extension
+      ~CustomJsonReporter.name
+   
+   

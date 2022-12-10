@@ -1,0 +1,6 @@
+pylint\_report.pylint\_report.register
+======================================
+
+.. currentmodule:: pylint_report.pylint_report
+
+.. autofunction:: register

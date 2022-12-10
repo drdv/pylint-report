@@ -1,0 +1,46 @@
+pylint\_report.pylint\_report
+=============================
+
+.. automodule:: pylint_report.pylint_report
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :nosignatures:
+   
+      get_parser
+      get_score
+      get_template
+      json2html
+      main
+      register
+      sphinx_argparse_func
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      CustomJsonReporter
+   
+   
+
+   
+   
+   
+
+
+

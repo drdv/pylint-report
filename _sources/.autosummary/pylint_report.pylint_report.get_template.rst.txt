@@ -1,0 +1,6 @@
+pylint\_report.pylint\_report.get\_template
+===========================================
+
+.. currentmodule:: pylint_report.pylint_report
+
+.. autofunction:: get_template

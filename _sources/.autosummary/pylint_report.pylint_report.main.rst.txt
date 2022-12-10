@@ -1,0 +1,6 @@
+pylint\_report.pylint\_report.main
+==================================
+
+.. currentmodule:: pylint_report.pylint_report
+
+.. autofunction:: main

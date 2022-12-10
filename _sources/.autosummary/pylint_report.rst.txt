@@ -1,0 +1,30 @@
+﻿pylint\_report
+==============
+
+.. automodule:: pylint_report
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. autosummary::
+   :toctree:
+   :template: custom-module-template.rst
+   :recursive:
+
+   pylint_report.pylint_report
+

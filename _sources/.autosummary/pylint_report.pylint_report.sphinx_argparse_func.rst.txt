@@ -1,0 +1,6 @@
+pylint\_report.pylint\_report.sphinx\_argparse\_func
+====================================================
+
+.. currentmodule:: pylint_report.pylint_report
+
+.. autofunction:: sphinx_argparse_func
