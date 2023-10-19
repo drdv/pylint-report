@@ -50,7 +50,7 @@ or manually pass the ``--load-plugins`` and ``--output-format`` flags.
 
   + ``pylint_report.py report.json -o report.html``: generate html report
 
-* Or alternatively ``pylint path/to/code | pylint_report.py > report.html``
+* Or alternatively ``pylint path/to/code | pylint_report > report.html``
 
 Based on
 ---------
