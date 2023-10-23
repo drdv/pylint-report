@@ -21,7 +21,6 @@ pylint\_report.pylint\_report.CustomJsonReporter
       ~CustomJsonReporter.handle_message
       ~CustomJsonReporter.on_close
       ~CustomJsonReporter.on_set_current_module
-      ~CustomJsonReporter.set_output
       ~CustomJsonReporter.writeln
    
    
