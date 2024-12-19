@@ -7,7 +7,9 @@ name = "pylint_report"
 description = "Generates an html report summarizing the results of pylint."
 readme = "README.rst"
 requires-python = ">=3.8"
-dependencies = ["pylint", "Jinja2==3.1.4", "pandas==1.5.2", "argcomplete"]
+
+# fix numpy version (see https://stackoverflow.com/a/78641304)
+dependencies = ["pylint", "Jinja2==3.1.4", "numpy==1.26.4", "pandas==1.5.2", "argcomplete"]
 dynamic = ["version"]
 
 [[project.authors]]

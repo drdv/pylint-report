@@ -7,13 +7,6 @@ TMP_PYLINT_FILE=.pylint_report.json
 _BLUE=\033[34m
 _END=\033[0m
 
-# canned recipe
-define show =
-echo -e "${_BLUE}============================================================${_END}" && \
-echo -e "${_BLUE}[$@] ${1}${_END}" && \
-echo -e "${_BLUE}============================================================${_END}"
-endef
-
 .PHONY: help
 help: ## Show this help
 	@egrep -h '\s##\s' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "${_BLUE}%-15s${_END} %s\n", $$1, $$2}'
@@ -52,7 +45,7 @@ test-copy-to-docs:
 
 .PHONY: open
 open: ## Open sphinx documentation
-	brave-browser ${HTML_DIR}/index.html
+	xdg-open ${HTML_DIR}/index.html
 
 pre-commit: ## Execute pre-commit on all files
 	@pre-commit run -a
