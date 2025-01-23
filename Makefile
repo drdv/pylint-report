@@ -1,3 +1,4 @@
+SHELL := bash
 PYTHON := python
 PYLINT := pylint
 
