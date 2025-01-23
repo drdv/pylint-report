@@ -2,9 +2,9 @@ SHELL := bash
 PYTHON := python
 PYLINT := pylint
 
-VENV=.venv
+VENV := .venv
 DOCS_DIR := docs/sphinx
-TMP_PYLINT_FILE=.pylint_report.json
+TMP_PYLINT_FILE := .pylint_report.json
 
 HTML_DIR := $(DOCS_DIR)/build/html
 VENV_ACTIVATE := source ${VENV}/bin/activate
@@ -93,5 +93,6 @@ rm-docs:
 clean: rm-docs
 	rm -rf pylint_report.egg-info
 	rm -rf pylint_report/_version.py
+	rm -rf dist
 	find . -name "__pycache__" | xargs rm -rf
 	rm -rf .venv
