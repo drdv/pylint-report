@@ -1,25 +1,28 @@
-PYTHON=python
-VENV_NAME=.venv
-PYLINT=pylint
-HTML_DIR=docs/sphinx/build/html
+PYTHON := python
+PYLINT := pylint
+
+VENV=.venv
+DOCS_DIR := docs/sphinx
 TMP_PYLINT_FILE=.pylint_report.json
 
-_BLUE=\033[34m
-_END=\033[0m
+HTML_DIR := $(DOCS_DIR)/build/html
+VENV_ACTIVATE := source ${VENV}/bin/activate
 
-.PHONY: help
-help: ## Show this help
-	@egrep -h '\s##\s' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "${_BLUE}%-15s${_END} %s\n", $$1, $$2}'
+help: URL := github.com/drdv/makefile-doc/releases/latest/download/makefile-doc.awk
+help: DIR := $(HOME)/.local/share/makefile-doc
+help: SCR := $(DIR)/makefile-doc.awk
+help: ## show this help
+	@test -f $(SCR) || wget -q -P $(DIR) $(URL)
+	@awk -f $(SCR) $(MAKEFILE_LIST)
+
+##@
+##@----- Code quality -----
+##@
 
 docs: rm-docs lint test ## Generate sphinx docs
-	cd docs/sphinx && make html
-
+	cd $(DOCS_DIR) && make html
 lint: lint-run lint-copy-to-docs ## Lint code
 test: test-run test-copy-to-docs ## Run unit tests
-
-rm-docs: ## Delete generated docs
-	@rm -rf docs/sphinx/source/.autosummary
-	@rm -rf docs/sphinx/build
 
 lint-run:
 	-@${PYLINT} pylint_report pylint_report/utest/* > ${TMP_PYLINT_FILE} || exit 0
@@ -43,24 +46,51 @@ test-copy-to-docs:
 	mv -f .utest_reports $(HTML_DIR)
 	rm -rf .coverage .pytest_cache
 
-.PHONY: open
-open: ## Open sphinx documentation
-	xdg-open ${HTML_DIR}/index.html
-
-pre-commit: ## Execute pre-commit on all files
+## Execute pre-commit on all files
+.PHONY: pre-commit
+pre-commit:
 	@pre-commit run -a
 
-setup-venv: ## Setup empty venv
-	${PYTHON} -m venv ${VENV_NAME} && \
-	. ${VENV_NAME}/bin/activate && \
-	pip install --upgrade pip
+$(VENV):
+	${PYTHON} -m venv $@ && $(VENV_ACTIVATE) && pip install --upgrade pip
 
-install-local: setup-venv ## Editable install in venv
-	. ${VENV_NAME}/bin/activate && pip install -e .[dev]
+##@
+##@----- Installation and packaging -----
+##@
 
-dist-local: setup-venv ## Build package
-	. ${VENV_NAME}/bin/activate && pip install build && ${PYTHON} -m build
+## Editable install in venv
+.PHONY: install
+install: | $(VENV)
+	$(VENV_ACTIVATE) && pip install -e .[dev]
 
-publish: ## Publish to PyPi
-	pip install build && ${PYTHON} -m build && pip install twine && \
-	twine upload dist/* --verbose
+## Build package
+.PHONY: package
+package: | $(VENV)
+	$(VENV_ACTIVATE) && pip install build && ${PYTHON} -m build
+
+##! Publish on PyPi
+.PHONY: publish
+publish: package
+	$(VENV_ACTIVATE) && pip install twine && twine upload dist/* --verbose
+
+##@
+##@----- Other -----
+##@
+
+## Open sphinx documentation
+.PHONY: open
+open:
+	xdg-open ${HTML_DIR}/index.html
+
+##! Delete generated docs
+rm-docs:
+	@rm -rf $(DOCS_DIR)/source/.autosummary
+	@rm -rf $(DOCS_DIR)/build
+
+##! Clean all
+.PHONY: clean
+clean: rm-docs
+	rm -rf pylint_report.egg-info
+	rm -rf pylint_report/_version.py
+	find . -name "__pycache__" | xargs rm -rf
+	rm -rf .venv
