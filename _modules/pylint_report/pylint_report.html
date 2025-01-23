@@ -5,8 +5,8 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" />
 
     <!-- Generated with Sphinx 8.1.3 and Furo 2024.08.06 -->
-        <title>pylint_report.pylint_report - pylint_report 2.4.1.dev19+gb9babab documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
+        <title>pylint_report.pylint_report - pylint_report 2.4.2.dev3+gb267139 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../_static/tabs.css?v=4c969af8" />
@@ -167,7 +167,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">pylint_report 2.4.1.dev19+gb9babab documentation</div></a>
+      <a href="../../index.html"><div class="brand">pylint_report 2.4.2.dev3+gb267139 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -191,7 +191,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
   
   
-  <span class="sidebar-brand-text">pylint_report 2.4.1.dev19+gb9babab documentation</span>
+  <span class="sidebar-brand-text">pylint_report 2.4.2.dev3+gb267139 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -255,16 +255,16 @@
           <h1>Source code for pylint_report.pylint_report</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/env python3</span>
 <span class="sd">&quot;&quot;&quot;Custom JSON reporter for pylint, and JSON to HTML export utility.&quot;&quot;&quot;</span>
-<span class="kn">import</span> <span class="nn">argparse</span>
-<span class="kn">import</span> <span class="nn">html</span>
-<span class="kn">import</span> <span class="nn">json</span>
-<span class="kn">import</span> <span class="nn">sys</span>
-<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
-<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">argparse</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">html</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
 
-<span class="kn">import</span> <span class="nn">jinja2</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">from</span> <span class="nn">pylint.reporters.base_reporter</span> <span class="kn">import</span> <span class="n">BaseReporter</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">jinja2</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pylint.reporters.base_reporter</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseReporter</span>
 
 <span class="n">CURRENT_DIR</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span>
 
@@ -275,7 +275,7 @@
 
 <div class="viewcode-block" id="get_score">
 <a class="viewcode-back" href="../../.autosummary/pylint_report.pylint_report.get_score.html#pylint_report.pylint_report.get_score">[docs]</a>
-<span class="k">def</span> <span class="nf">get_score</span><span class="p">(</span><span class="n">stats</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_score</span><span class="p">(</span><span class="n">stats</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute score.</span>
 
 <span class="sd">    Note</span>
@@ -298,7 +298,7 @@
 
 <div class="viewcode-block" id="get_template">
 <a class="viewcode-back" href="../../.autosummary/pylint_report.pylint_report.get_template.html#pylint_report.pylint_report.get_template">[docs]</a>
-<span class="k">def</span> <span class="nf">get_template</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_template</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Return jinja2 template.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">jinja2</span><span class="o">.</span><span class="n">Environment</span><span class="p">(</span>
         <span class="n">loader</span><span class="o">=</span><span class="n">jinja2</span><span class="o">.</span><span class="n">FileSystemLoader</span><span class="p">(</span><span class="n">CURRENT_DIR</span><span class="p">),</span>
@@ -310,7 +310,7 @@
 
 <div class="viewcode-block" id="json2html">
 <a class="viewcode-back" href="../../.autosummary/pylint_report.pylint_report.json2html.html#pylint_report.pylint_report.json2html">[docs]</a>
-<span class="k">def</span> <span class="nf">json2html</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">external_css</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">json2html</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">external_css</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate an html file based on JSON data.&quot;&quot;&quot;</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">external_css</span><span class="p">:</span>
@@ -344,7 +344,7 @@
 
 
 
-<span class="k">class</span> <span class="nc">_SetEncoder</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">JSONEncoder</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">_SetEncoder</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">JSONEncoder</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Handle sets when dumping to json.</span>
 
 <span class="sd">    Note</span>
@@ -353,7 +353,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">default</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">o</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">default</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">o</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="nb">set</span><span class="p">):</span>
             <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">o</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">JSONEncoder</span><span class="o">.</span><span class="n">default</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">o</span><span class="p">)</span>
@@ -361,7 +361,7 @@
 
 <div class="viewcode-block" id="CustomJsonReporter">
 <a class="viewcode-back" href="../../.autosummary/pylint_report.pylint_report.CustomJsonReporter.html#pylint_report.pylint_report.CustomJsonReporter">[docs]</a>
-<span class="k">class</span> <span class="nc">CustomJsonReporter</span><span class="p">(</span><span class="n">BaseReporter</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">CustomJsonReporter</span><span class="p">(</span><span class="n">BaseReporter</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Customize the default json reporter.</span>
 
 <span class="sd">    Note</span>
@@ -372,14 +372,14 @@
 
     <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;custom json&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct object.&quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span> <span class="k">if</span> <span class="n">output</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">output</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">messages</span> <span class="o">=</span> <span class="p">[]</span>
 
 <div class="viewcode-block" id="CustomJsonReporter.handle_message">
 <a class="viewcode-back" href="../../.autosummary/pylint_report.pylint_report.CustomJsonReporter.html#pylint_report.pylint_report.CustomJsonReporter.handle_message">[docs]</a>
-    <span class="k">def</span> <span class="nf">handle_message</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">handle_message</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Manage message of different type and in the context of path.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">messages</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
             <span class="p">{</span>
@@ -398,22 +398,22 @@
 
 <div class="viewcode-block" id="CustomJsonReporter.display_messages">
 <a class="viewcode-back" href="../../.autosummary/pylint_report.pylint_report.CustomJsonReporter.html#pylint_report.pylint_report.CustomJsonReporter.display_messages">[docs]</a>
-    <span class="k">def</span> <span class="nf">display_messages</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layout</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">display_messages</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layout</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;See ``pylint/reporters/base_reporter.py``.&quot;&quot;&quot;</span></div>
 
 
 <div class="viewcode-block" id="CustomJsonReporter.display_reports">
 <a class="viewcode-back" href="../../.autosummary/pylint_report.pylint_report.CustomJsonReporter.html#pylint_report.pylint_report.CustomJsonReporter.display_reports">[docs]</a>
-    <span class="k">def</span> <span class="nf">display_reports</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layout</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">display_reports</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layout</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;See ``pylint/reporters/base_reporter.py``.&quot;&quot;&quot;</span></div>
 
 
-    <span class="k">def</span> <span class="nf">_display</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layout</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_display</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layout</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;See ``pylint/reporters/base_reporter.py``.&quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="CustomJsonReporter.on_close">
 <a class="viewcode-back" href="../../.autosummary/pylint_report.pylint_report.CustomJsonReporter.html#pylint_report.pylint_report.CustomJsonReporter.on_close">[docs]</a>
-    <span class="k">def</span> <span class="nf">on_close</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stats</span><span class="p">,</span> <span class="n">previous_stats</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">on_close</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stats</span><span class="p">,</span> <span class="n">previous_stats</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;See ``pylint/reporters/base_reporter.py``.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">stats</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>  <span class="c1"># behavior from version 2.12.0</span>
             <span class="n">stats</span> <span class="o">=</span> <span class="p">{</span>
@@ -440,7 +440,7 @@
 
 <div class="viewcode-block" id="register">
 <a class="viewcode-back" href="../../.autosummary/pylint_report.pylint_report.register.html#pylint_report.pylint_report.register">[docs]</a>
-<span class="k">def</span> <span class="nf">register</span><span class="p">(</span><span class="n">linter</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">register</span><span class="p">(</span><span class="n">linter</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Register a reporter (required by :mod:`pylint`).&quot;&quot;&quot;</span>
     <span class="n">linter</span><span class="o">.</span><span class="n">register_reporter</span><span class="p">(</span><span class="n">CustomJsonReporter</span><span class="p">)</span></div>
 
@@ -448,7 +448,7 @@
 
 <div class="viewcode-block" id="get_parser">
 <a class="viewcode-back" href="../../.autosummary/pylint_report.pylint_report.get_parser.html#pylint_report.pylint_report.get_parser">[docs]</a>
-<span class="k">def</span> <span class="nf">get_parser</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_parser</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Define cli parser.&quot;&quot;&quot;</span>
     <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
 
@@ -485,7 +485,7 @@
 
 <div class="viewcode-block" id="main">
 <a class="viewcode-back" href="../../.autosummary/pylint_report.pylint_report.main.html#pylint_report.pylint_report.main">[docs]</a>
-<span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">argv</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">argv</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Main.&quot;&quot;&quot;</span>
     <span class="n">args</span> <span class="o">=</span> <span class="n">get_parser</span><span class="p">()</span><span class="o">.</span><span class="n">parse_args</span><span class="p">(</span><span class="n">argv</span><span class="p">)</span>
 
@@ -498,7 +498,7 @@
 
 <div class="viewcode-block" id="sphinx_argparse_func">
 <a class="viewcode-back" href="../../.autosummary/pylint_report.pylint_report.sphinx_argparse_func.html#pylint_report.pylint_report.sphinx_argparse_func">[docs]</a>
-<span class="k">def</span> <span class="nf">sphinx_argparse_func</span><span class="p">():</span>  <span class="c1"># pragma: no cover</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">sphinx_argparse_func</span><span class="p">():</span>  <span class="c1"># pragma: no cover</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a parser to use with sphinx-argparse.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">get_parser</span><span class="p">()</span></div>
 
@@ -538,7 +538,7 @@
       
     </aside>
   </div>
-</div><script src="../../_static/documentation_options.js?v=208980f2"></script>
+</div><script src="../../_static/documentation_options.js?v=c525f61b"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/furo.js?v=5fa4622c"></script>
